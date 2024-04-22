@@ -3,6 +3,7 @@ import { IconButton, Input } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import debounce from "lodash/debounce";
 import { Button } from "@mui/base";
+import Link from "next/link";
 
 interface Country {
   name: {
@@ -88,12 +89,11 @@ export const SearchBar: React.FC = ({}) => {
             <li className="p-2 text-red-500">{error}</li>
           ) : (
             suggestions.map((country, index) => (
-              <Button
-                key={index}
-                className="px-6 py-4 hover:bg-gray-100 cursor-pointer text-left font-medium text-base leading-5"
-              >
-                {country.name.common}
-              </Button>
+              <Link key={index} href={`/detail?name=${country.name.common}`}>
+                <Button className="px-6 py-4 hover:bg-gray-100 cursor-pointer text-left font-medium text-base leading-5">
+                  {country.name.common}
+                </Button>
+              </Link>
             ))
           )}
         </div>
