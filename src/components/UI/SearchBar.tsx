@@ -22,7 +22,7 @@ export const SearchBar: React.FC = ({}) => {
 
   const apiUrl: string = `https://restcountries.com/v3.1/name/`;
 
-  const fetchSuggestions = async (query: string): Promise<void> => {
+  const fetchSuggestions = useCallback(async (query: string): Promise<void> => {
     if (!query.trim()) {
       setSuggestions([]);
       setError("");
@@ -43,13 +43,13 @@ export const SearchBar: React.FC = ({}) => {
       setError("Data Not Found");
       setSuggestions([]);
     }
-  };
+  }, [apiUrl]); // Dependency for useCallback
 
   const debouncedFetchSuggestions = useCallback(
     debounce((nextValue: string) => {
       fetchSuggestions(nextValue);
     }, 500),
-    []
+    [fetchSuggestions] // Dependency for useCallback
   );
 
   const handleInputChange = (
