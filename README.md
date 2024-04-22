@@ -29,5 +29,5 @@ cd your-repo-name
 # Install dependencies
 npm install
 
-### Runing The Application
+# Runing The Application
 npm run dev
