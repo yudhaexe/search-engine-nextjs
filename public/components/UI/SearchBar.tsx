@@ -11,6 +11,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
     setQuery(event.target.value);
   };
 
+  
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSubmit(query);
