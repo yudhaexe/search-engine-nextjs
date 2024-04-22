@@ -1,11 +1,11 @@
 import Image from "next/image";
 import React from "react";
+import interselect from "@/assets/Intersect.png";
 
 interface ComponentProps {
   type: 1 | 2 | 3;
   data: {
     latlong?: string;
-    coordinates?: string;
     imageUrl?: string;
     capital?: string;
     region?: string;
@@ -20,26 +20,42 @@ const InfoCard: React.FC<ComponentProps> = ({ type, data }) => {
   switch (type) {
     case 1:
       return (
-        <div className="flex flex-1 min-w-0 justify-between items-center shadow-sm p-4">
-          <div className="pr-4">
-            <div>{data.latlong}</div>
-            <div>{data.coordinates}</div>
+        <div className="flex flex-1 min-w-0 justify-between items-center shadow-sm">
+          <div className="px-3">
+            <div className="font-medium text-lg">LatLong</div>
+            <div className="font-bold text-4xl text-[#8362F2]">
+              {data.latlong
+                ? data.latlong
+                    .split(",")
+                    .map((coord) => parseFloat(coord).toFixed(1))
+                    .join(", ")
+                : ""}
+            </div>
           </div>
           <Image
-            width={46}
-            height={30}
-            src={data?.imageUrl}
+            width={204}
+            height={120}
+            src={interselect}
             alt="National Flag"
-            className="shadow-sm"
+            className=""
           />
         </div>
       );
     case 2:
       return (
-        <div className="shadow-sm p-4 flex-1 min-w-0">
-          <div>{data.capital}</div>
-          <div>{data.region}</div>
-          <div>{data.subregion}</div>
+        <div className="shadow-sm p-4 flex-1 min-w-0 text-lg leading-5">
+          <div>
+            <span className="font-medium">Capital : </span>
+            <span className="font-bold"> {data.capital}</span>
+          </div>
+          <div>
+            <span className="font-medium">Region : </span>
+            <span className="font-bold">{data.region}</span>
+          </div>
+          <div>
+            <span className="font-medium">Sub Region : </span>
+            <span className="font-bold">{data.subregion}</span>
+          </div>
         </div>
       );
     case 3:

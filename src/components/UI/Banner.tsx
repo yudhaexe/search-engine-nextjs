@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { IconButton, Input } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
-interface NationBannerProps {
+interface BannerProps {
   name: string;
   flagImageUrl: string;
 }
 
-export const NationBanner: React.FC<NationBannerProps> = ({
+export const Banner: React.FC<BannerProps> = ({
   name,
   flagImageUrl,
 }) => {

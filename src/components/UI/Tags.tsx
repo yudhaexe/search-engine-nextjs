@@ -1,10 +1,10 @@
 import React from "react";
 
-interface NationNativeProps {
+interface TagProps {
   tags: string[];
 }
 
-const NationNativeTags: React.FC<NationNativeProps> = ({ tags }) => {
+const Tags: React.FC<TagProps> = ({ tags }) => {
   return (
     <div className="flex gap-1 mt-3">
       {tags.map((tag, index) => (
@@ -19,4 +19,4 @@ const NationNativeTags: React.FC<NationNativeProps> = ({ tags }) => {
   );
 };
 
-export default NationNativeTags;
+export default Tags;
