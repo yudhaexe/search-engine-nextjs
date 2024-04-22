@@ -1,55 +1,95 @@
 "use client";
-
+import BackButton from "@/components/Detail/BackButton";
+import CallingCodeInfoCard from "@/components/Detail/CountryCallingCode";
+import CountryInfoCards from "@/components/Detail/CountryCallingCode"; // This seems a duplicate import of the same component
+import CurrencyInfo from "@/components/Detail/CountryCurrency";
+import CountryInformation from "@/components/Detail/CountryInformation";
 import InfoCard from "@/components/UI/InfoCard";
-import { NationBanner } from "@/components/UI/NationBanner";
-import NationNativeTags from "@/components/UI/NationNativeTags";
-import { Button } from "@mui/base";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useSearchParams } from "next/navigation"; // Verify this import path
+import { useEffect, useState } from "react";
 
-export default function Home() {
+interface Country {
+  name: {
+    common: string;
+    official: string;
+  };
+  flags: {
+    svg: string;
+  };
+  tld: string[];
+  cca2: string;
+  capital: string[];
+  region: string;
+  subregion: string;
+  languages: { [key: string]: string };
+  latlng: number[];
+  callingCodes: string[];
+  idd: {  
+    root: string;
+    suffixes: string[];
+  };
+  currencies: { [key: string]: { name: string, symbol: string } }; // Corrected to match data structure
+}
+
+export default function Detail() {
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name");
+  const [nation, setNation] = useState<Country | null>(null);
+
+  useEffect(() => {
+    async function fetchCountry() {
+      if (typeof name === "string") {
+        try {
+          const response = await fetch(
+            `https://restcountries.com/v3.1/name/${encodeURIComponent(name)}?fullText=true`
+          );
+          const data: Country[] = await response.json();
+          if (data.length > 0) {
+            setNation(data[0]);
+          } else {
+            throw new Error("No data found");
+          }
+        } catch (error) {
+          console.error("Failed to fetch country", error);
+          setNation(null);
+        }
+      }
+    }
+
+    fetchCountry();
+  }, [name]);
+
+  if (!nation) {
+    return <div>Loading...</div>;
+  }
+
+  const callingCode = `${nation.idd.root.slice(1)}${nation.idd.suffixes[0]}`;
+  const currencyCode = Object.keys(nation.currencies)[0]; // Extracting the first currency code
+
   return (
     <div className="container mt-20">
-      <Button className="bg-[#8362F2] text-white px-3 py-3 rounded-lg font-medium leading-7 flex gap-2">
-        <ArrowBackIcon className="place-self-center" />
-        Back To Home Page
-      </Button>
-      <div className="flex flex-col mt-12">
-        <NationBanner
-          name="Indonesia"
-          flagImageUrl="https://flagcdn.com/id.svg"
-        />
-        <NationNativeTags
-          tags={["ID", "Republic Of Indonesia", "Republik Indonesia"]}
-        />
-      </div>
-      <div className="flex flex-row flex-wrap gap-5">
+      <BackButton />
+      <CountryInformation nation={nation} />
+      <div className="flex flex-row flex-wrap gap-5 mt-6">
         <InfoCard
           type={1}
           data={{
-            latlong: "6.1751° S, 106.8650° E",
-            coordinates: "Jakarta, Indonesia",
-            imageUrl: "https://flagcdn.com/id.svg",
+            latlong: `${nation.latlng[0]}°, ${nation.latlng[1]}°`,
+            imageUrl: nation.flags.svg,
           }}
         />
         <InfoCard
           type={2}
           data={{
-            capital: "Jakarta",
-            region: "Asia",
-            subregion: "Southeast Asia",
+            capital: nation.capital[0],
+            region: nation.region,
+            subregion: nation.subregion,
           }}
         />
       </div>
-      <div className="gap-5">
-        <InfoCard
-          type={3}
-          data={{
-            header: "Welcome to Jakarta",
-            content: "The bustling capital of Indonesia.",
-            description:
-              "Jakarta is known for its vibrant culture and history.",
-          }}
-        />
+      <div className="flex gap-60 mt-10">
+        <CallingCodeInfoCard callingCode={callingCode} />
+        <CurrencyInfo currencyCode={currencyCode} />
       </div>
     </div>
   );
