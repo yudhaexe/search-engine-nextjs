@@ -1,0 +1,35 @@
+.tooltip {
+    position: absolute;
+    z-index: 10;
+    width: max-content;
+    max-width: 200px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip-arrow {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+  
+  /* Show tooltip text when hovering over the button */
+  button:hover + .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Initial state of the tooltip */
+  .tooltip {
+    visibility: hidden;
+    opacity: 0;
+  }
+  
