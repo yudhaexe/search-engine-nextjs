@@ -1,6 +1,7 @@
-'use client'
+"use client";
 
-import { SearchBar } from "../public/components/UI/SearchBar";
+import { SearchBar } from "@/components/UI/SearchBar";
+
 
 
 export default function Home() {
@@ -8,7 +9,5 @@ export default function Home() {
     console.log("Search Query:", query);
   };
 
-  return (
-    <SearchBar onSubmit={handleSearchSubmit} />
-  );
+  return <SearchBar />;
 }
